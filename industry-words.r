@@ -201,7 +201,7 @@ ggsave("figures/search-results-clustered.png", p1, height = 12, width = 4.5, dpi
 
 
 ###--------------------------------------------------
-### 3: Finally, try scaling the search data before
+### 3: Try scaling the search data before
 ### clustering.
 ###
 ### Scaled Search Results
@@ -241,6 +241,7 @@ dev.off()
 data.m <- data.frame(data.search.cen)
 data.m$Site <- rownames(data.m)
 data.m <- gather(data.m, Search, Score, dog:woman)
+data.m$Score <- data.m$Score
 data.m$Search <- factor(data.m$Search, levels=unique(data.m$Search)[out.by.search$order], ordered=TRUE)
 data.m$Site <- factor(data.m$Site, levels=unique(data.m$Site)[rev(out.by.site$order)], ordered=TRUE)
 
@@ -248,8 +249,64 @@ pdf(file="figures/search-results-clustered-scaled.pdf", height=12, width=5)
 p <- ggplot(data.m, aes(x=Search, y=Site, fill=Score))
 p1 <- p + geom_tile() +  theme(axis.text.x=element_text(hjust=1, angle=45),
                                       axis.text.y=element_text(hjust=1), legend.position = "top") +
-    scale_fill_gradient(low="white", high=muted("red")) + labs(fill="Scaled Hits", y="", x="Search Term")
+    scale_fill_gradient(low="gray98", high=muted("red")) + labs(fill="Scaled Hits", y="", x="Search Term")
 print(p1)
 dev.off()
 
 ggsave("figures/search-results-clustered-scaled.png", p1, height = 12, width = 5, dpi = 300)
+
+
+
+
+###--------------------------------------------------
+### 4: Drop Wikipedia and Tumblr, then scale.
+###--------------------------------------------------
+
+ind <- rownames(data.search) %in% c("en.wikipedia.org", "tumblr")
+data.search.cen <- data.search[!ind,]
+data.search.cen <- scale(data.search.cen, center=FALSE)
+data.search.cen.t <- t(scale(data.search.cen, center=FALSE))
+
+## Dissimilarity Matrices
+d <- dist(data.search.cen)
+d1 <- dist(data.search.cen.t)
+
+out.by.site <- hclust(d, method="ward.D2")
+out.by.search <- hclust(d1, method="ward.D2")
+
+
+### --------------------------------------------------
+### Dendrograms
+### --------------------------------------------------
+pdf(file="figures/site-search-clustering-scaled-nowikitumb.pdf", height=12, width=10)
+plot(out.by.site, hang=-1, main="Clustering Sites by Searches (Scaled)",
+          sub="", xlab="")
+dev.off()
+
+pdf(file="figures/search-results-clustering-scaled-nowikitumb.pdf", height=6, width=12)
+plot(out.by.search, hang=-1, main="Clustering Searches by Site Profile (Scaled)",
+     sub="", xlab="")
+dev.off()
+
+
+### --------------------------------------------------
+### Plot scaled searched ordered by cluster results
+### --------------------------------------------------
+
+### Gather the data
+data.m <- data.frame(data.search.cen)
+data.m$Site <- rownames(data.m)
+data.m <- gather(data.m, Search, Score, dog:woman)
+data.m$Score <- data.m$Score
+data.m$Search <- factor(data.m$Search, levels=unique(data.m$Search)[out.by.search$order], ordered=TRUE)
+data.m$Site <- factor(data.m$Site, levels=unique(data.m$Site)[rev(out.by.site$order)], ordered=TRUE)
+
+pdf(file="figures/search-results-clustered-scaled-nowikitumb.pdf", height=12, width=5)
+p <- ggplot(data.m, aes(x=Search, y=Site, fill=Score))
+p1 <- p + geom_tile() +  theme(axis.text.x=element_text(hjust=1, angle=45),
+                                      axis.text.y=element_text(hjust=1), legend.position = "top") +
+    scale_fill_gradient(low="gray98", high=muted("red")) + labs(fill="Scaled Hits", y="", x="Search Term")
+print(p1)
+dev.off()
+
+ggsave("figures/search-results-clustered-scaled-nowikitumb.png", p1, height = 12, width = 5, dpi = 300)
