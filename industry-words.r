@@ -125,14 +125,14 @@ out.by.search <- hclust(d1, method="ward.D2")
 ### --------------------------------------------------
 ### Dendrograms
 ### --------------------------------------------------
-pdf(file="figures/site-search-clustering.pdf", height=8, width=12)
+pdf(file="figures/site-search-dengrogram.pdf", height=8, width=12)
 plot(out.by.site, hang=-1, main="Clustering Sites by Searches",
           sub="", xlab="")
 dev.off()
 
 
 png(
-  "figures/site-search-clustering.png",
+  "figures/site-search-dengrogram.png",
   width     = 6,
   height    = 4,
   units     = "in",
@@ -153,13 +153,13 @@ dev.off()
 
 
 ## Not bad
-pdf(file="figures/search-results-clustering.pdf", height=6, width=12)
+pdf(file="figures/search-results-dengrogram.pdf", height=6, width=12)
 plot(out.by.search, hang=-1, main="Clustering Searches by Site Profile",
      sub="", xlab="")
 dev.off()
 
 png(
-  "figures/search-results-clustering.png",
+  "figures/search-results-dengrogram.png",
   width     = 7,
   height    = 4,
   units     = "in",
@@ -222,12 +222,12 @@ out.by.search <- hclust(d1, method="ward.D2")
 ### --------------------------------------------------
 ### Dendrograms
 ### --------------------------------------------------
-pdf(file="figures/site-search-clustering-scaled.pdf", height=12, width=10)
+pdf(file="figures/site-search-dengrogram-scaled.pdf", height=12, width=10)
 plot(out.by.site, hang=-1, main="Clustering Sites by Searches (Scaled)",
           sub="", xlab="")
 dev.off()
 
-pdf(file="figures/search-results-clustering-scaled.pdf", height=6, width=12)
+pdf(file="figures/search-results-dengrogram-scaled.pdf", height=6, width=12)
 plot(out.by.search, hang=-1, main="Clustering Searches by Site Profile (Scaled)",
      sub="", xlab="")
 dev.off()
@@ -278,12 +278,12 @@ out.by.search <- hclust(d1, method="ward.D2")
 ### --------------------------------------------------
 ### Dendrograms
 ### --------------------------------------------------
-pdf(file="figures/site-search-clustering-scaled-nowikitumb.pdf", height=12, width=10)
+pdf(file="figures/site-search-dengrogram-scaled-nowikitumb.pdf", height=12, width=10)
 plot(out.by.site, hang=-1, main="Clustering Sites by Searches (Scaled)",
           sub="", xlab="")
 dev.off()
 
-pdf(file="figures/search-results-clustering-scaled-nowikitumb.pdf", height=6, width=12)
+pdf(file="figures/search-results-dengrogram-scaled-nowikitumb.pdf", height=6, width=12)
 plot(out.by.search, hang=-1, main="Clustering Searches by Site Profile (Scaled)",
      sub="", xlab="")
 dev.off()
